@@ -9,10 +9,14 @@ const TaskItem = ({taskCollun, setTaskList}) => {
 
   function addTask (e) {
     if(e.key === 'Enter'){
-      setTaskInput(taskCollun.tasks.push(taskInput))
+      setTaskInput(taskCollun.tasks.unshift(taskInput))
       setTaskInput('')
       setShowInput(false)
     }
+  }
+
+  function deleteItem (i) {
+    setTaskInput(taskCollun.tasks.splice(i, 1))
   }
 
   return (
@@ -26,11 +30,13 @@ const TaskItem = ({taskCollun, setTaskList}) => {
           onChange={e => setTaskInput(e.target.value)}
           onKeyDown={addTask}
         />}
-          {taskCollun.tasks.map((task) => (
-            <C.TaskContainer>
+          {taskCollun.tasks.map((task, i) => (
+            <C.TaskContainer key={taskCollun.id}>
                 <p>{task}</p>
                 <C.ControlsContainer>
-                  <button>X</button>
+                  <button onClick={() => deleteItem(i)}>
+                    X
+                  </button>
                   <button>E</button>
                 </C.ControlsContainer>
             </C.TaskContainer>
