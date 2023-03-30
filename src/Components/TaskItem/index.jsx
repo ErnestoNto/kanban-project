@@ -2,42 +2,51 @@ import React, { useState } from 'react'
 
 import * as C from './taskItem'
 
-const TaskItem = ({taskCollun, setTaskList}) => {
+const TaskItem = ({taskCollun, setIsModalOpen, setSelectedTask, addTask, deleteItem}) => {
   const [taskInput, setTaskInput] = useState('')
+  const [taskCollunItem, setTaskCollunItem] = useState(taskCollun)
 
   const [showInput, setShowInput] = useState(false)
 
-  function addTask (e) {
+  function addNewTask (e) {
     if(e.key === 'Enter'){
-      setTaskInput(taskCollun.tasks.unshift(taskInput))
+      addTask(taskCollunItem.id, taskInput)
       setTaskInput('')
       setShowInput(false)
     }
+
   }
 
-  function deleteItem (i) {
-    setTaskInput(taskCollun.tasks.splice(i, 1))
+  function itemToDelete (id){
+    deleteItem(taskCollun.id, id)
   }
+
+  function trasferItem (task) {
+    setSelectedTask(task)
+    itemToDelete(task.id)
+    setIsModalOpen(true)
+  }
+
 
   return (
-    <C.Container hex={taskCollun.hex}>
+    <C.Container hex={taskCollunItem.hex}>
       <C.FormContainer>
-        <h2>{taskCollun.name}</h2>
+        <h2>{taskCollunItem.name}</h2>
         {showInput && <C.Input
           type='text'
           placeholder='Digite sua tarefa'
           value={taskInput}
           onChange={e => setTaskInput(e.target.value)}
-          onKeyDown={addTask}
+          onKeyDown={addNewTask}
         />}
-          {taskCollun.tasks.map((task, i) => (
-            <C.TaskContainer key={taskCollun.id}>
-                <p>{task}</p>
+          {taskCollun.tasks.map((task) => (
+            <C.TaskContainer key={Math.floor(Math.random() * 1000)}>
+                <p>{task.content}</p>
                 <C.ControlsContainer>
-                  <button onClick={() => deleteItem(i)}>
+                  <button onClick={() => itemToDelete(task.id)}>
                     X
                   </button>
-                  <button>E</button>
+                  <button onClick={() => trasferItem(task)}>E</button>
                 </C.ControlsContainer>
             </C.TaskContainer>
           ))}
