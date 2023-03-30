@@ -4,13 +4,12 @@ import * as C from './taskItem'
 
 const TaskItem = ({taskCollun, setIsModalOpen, setSelectedTask, addTask, deleteItem}) => {
   const [taskInput, setTaskInput] = useState('')
-  const [taskCollunItem, setTaskCollunItem] = useState(taskCollun)
 
   const [showInput, setShowInput] = useState(false)
 
   function addNewTask (e) {
     if(e.key === 'Enter'){
-      addTask(taskCollunItem.id, taskInput)
+      addTask(taskCollun.id, taskInput)
       setTaskInput('')
       setShowInput(false)
     }
@@ -29,9 +28,9 @@ const TaskItem = ({taskCollun, setIsModalOpen, setSelectedTask, addTask, deleteI
 
 
   return (
-    <C.Container hex={taskCollunItem.hex}>
+    <C.Container hex={taskCollun.hex}>
       <C.FormContainer>
-        <h2>{taskCollunItem.name}</h2>
+        <h2>{taskCollun.name}</h2>
         {showInput && <C.Input
           type='text'
           placeholder='Digite sua tarefa'
